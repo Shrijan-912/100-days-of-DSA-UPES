@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 // Node structure
 struct Node {
@@ -13,7 +12,7 @@ struct Queue {
     struct Node *front, *rear;
 };
 
-// Initialize queue
+// Create an empty queue
 struct Queue* createQueue() {
     struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
     q->front = q->rear = NULL;
@@ -36,21 +35,22 @@ void enqueue(struct Queue* q, int value) {
 }
 
 // Dequeue operation
-void dequeue(struct Queue* q) {
+int dequeue(struct Queue* q) {
     if (q->front == NULL) {
-        printf("-1\n");
-        return;
+        return -1; // Queue is empty
     }
 
     struct Node* temp = q->front;
-    printf("%d\n", temp->data);
+    int value = temp->data;
 
     q->front = q->front->next;
 
-    if (q->front == NULL)
+    if (q->front == NULL) {
         q->rear = NULL;
+    }
 
     free(temp);
+    return value;
 }
 
 // Main function
@@ -61,15 +61,15 @@ int main() {
     struct Queue* q = createQueue();
 
     while (N--) {
-        char op[10];
-        scanf("%s", op);
+        int choice, value;
 
-        if (strcmp(op, "enqueue") == 0) {
-            int x;
-            scanf("%d", &x);
-            enqueue(q, x);
-        } else if (strcmp(op, "dequeue") == 0) {
-            dequeue(q);
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            scanf("%d", &value);
+            enqueue(q, value);
+        } else if (choice == 2) {
+            printf("%d\n", dequeue(q));
         }
     }
 
